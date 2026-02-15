@@ -1,0 +1,14 @@
+{
+  "urgencia-neuro": [
+    "AVC isquêmico: hipodensidade em território ACM direita; inferindo infarto cerebral agudo.",
+    "Hematoma subdural agudo frontotemporal direita (1,5 cm); inferindo TCE grave."
+  ],
+  "torax": [
+    "Broncopatia inflamatória: espessamento brônquico com impactação mucoide distal.",
+    "Pneumonia: consolidações lobares inferiores bilaterais com broncograma aéreo."
+  ],
+  "abdome-figado": [
+    "Hepatomegalia esteatósica grau 2, sem lesões focais.",
+    "Nódulo hipodenso hepático S6 (12mm), suspeita cística benigna."
+  ]
+}
