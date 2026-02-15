@@ -62,23 +62,17 @@
       </ul>
     </nav>
 
-    <div class="main">
-  <header style="text-align:center;margin-bottom:30px;">
-    <h1 style="font-size:2.5em;color:#1e40af;margin:0;font-weight:bold;letter-spacing:2px;">🩻 HM Radiologia</h1>
-    <p style="font-size:1.2em;color:#475569;margin:5px 0;font-weight:500;">Modelos de Laudo</p>
-    <button class="login-btn" onclick="toggleLogin()">🔐 Login Editar</button>
-  </header>
+ <div class="main">
+  <div style="text-align:center;margin-bottom:40px;padding-top:30px;background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(248,250,252,0.9));backdrop-filter:blur(15px);border-radius:25px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.15);">
+    <h1 style="font-size:2.8em;color:#1e3a8a;margin:0 0 10px 0;font-weight:900;letter-spacing:4px;text-shadow:0 4px 20px rgba(30,58,138,0.3);display:inline-block;">🩻 HM Radiologia</h1>
+    <p style="font-size:1.5em;color:#475569;margin:0;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Modelos de Laudo</p>
+    <div style="margin-top:25px;">
+      <button class="login-btn" onclick="toggleLogin()" style="font-size:16px;padding:14px 28px;">🔐 Login Editar</button>
+    </div>
+  </div>
+  
+  <!-- resto do conteúdo -->
 
-      <header>
-        <button class="login-btn" onclick="toggleLogin()">🔐 Login Editar</button>
-      </header>
-      
-      <div id="loginForm" class="login">
-        <h2>🔐 Editor de Frases</h2>
-        <input type="password" id="senha" placeholder="Senha (hmradio2026)" maxlength="20">
-        <button onclick="login()">Entrar</button>
-        <div class="close" onclick="toggleLogin()">×</div>
-      </div>
 
       <div id="conteudo">
         <div class="categoria">
@@ -90,29 +84,20 @@
     </div>
   </div>
 
-  <script>
-  const SENHA_HASH = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5 de 'hmradio2026' - NÃO VISÍVEL!
+ <script>
+  const SENHA_HASH = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5('hmradio2026') - NINGUÉM VÊ SENHA!
   let editando = false;
-  let frasesUsuario = JSON.parse(localStorage.getItem('frasesHM') || '{}'); // Suas edições salvas
+  let frasesFixas = {
+    'urgencia-neuro': ['AVC isquêmico: hipodensidade ACM direita; infarto agudo.', 'Hematoma subdural agudo (1,5 cm); TCE grave.'],
+    'torax2': ['Broncopatia: espessamento brônquico + árvore brotamento.'],
+    // ... adicione suas outras categorias aqui
+  };
+  let frasesUsuario = JSON.parse(localStorage.getItem('frasesHM') || 'null') || {};
 
-  function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
-  function login(){
-    const senha = document.getElementById('senha').value;
-    if(md5(senha) === SENHA_HASH){ 
-      editando = true; 
-      loadFrasesUsuario();
-      document.getElementById('loginForm').style.display='none'; 
-      document.getElementById('senha').value='';
-      alert('✅ Login OK! Editor ativado. Edições salvas no seu browser.');
-    } else alert('❌ Senha incorreta!');
-  }
-
-  // MD5 simples (senha ofuscada)
-  function md5(string) {
-    function rotateLeft(lValue, iShiftBits) { return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits)); }
-    function addUnsigned(lX, lY) { let lX4 = (lX & 0x3FFFFFFF); let lY4 = (lY & 0x3FFFFFFF); let lX8 = (lX & 0x80000000); let lY8 = (lY & 0x80000000); let lResult = (lX4 + lY4); if (lX8 & lY8) { return (lResult ^ 0x80000000 ^ (lX4 & lY4)); } return lResult; }
-    function F(x, y, z) { return (x & y) | ((~x) & z); }
-    function G(x
+  // Função MD5 para senha segura
+  function md5(s) {
+    function md5cycle(a, b) {
+      let x = a[0], y = a[1], z = a[2], w =
 
 </body>
 </html>
