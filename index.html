@@ -3,33 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HM Radiologia - Laudos & Frases</title>
-  <meta name="description" content="Frases prontas de laudos para radiologistas - Neuro, Tórax, Abdome. HC UFPE/RHP.">
+  <title>HM Radiologia - Laudos Prontos</title>
+  <meta name="description" content="Frases categorizadas de laudos radiológicos - Neuro, Tórax, Abdome. HC UFPE/RHP.">
   <style>
-    body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f5;color:#333;}
-    h1,h2{color:#1e3a8a;text-align:center;font-size:1.5em;}
-    ul{list-style:none;padding:0;}
-    li{margin:10px 0;padding:15px;background:white;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-    .categoria{background:#e0e7ff;padding:10px;border-radius:5px;margin:10px 0;}
-    header{text-align:center;padding:20px;background:#1e40af;color:white;border-radius:10px;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;color:#333;}
+    header{position:fixed;top:0;width:100%;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);padding:15px 0;box-shadow:0 2px 20px rgba(0,0,0,0.1);z-index:100;text-align:center;}
+    h1{font-size:1.8em;color:#1e3a8a;margin-bottom:5px;}
+    .login{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:40px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;width:90%;max-width:400px;z-index:200;}
+    .login input{padding:15px;margin:10px;border:2px solid #e0e7ff;border-radius:10px;font-size:16px;width:80%;}
+    .login button{background:#1e40af;color:white;border:none;padding:15px 30px;border-radius:10px;cursor:pointer;font-size:16px;transition:0.3s;}
+    .login button:hover{background:#1e3a8a;}
+    #laudos{padding-top:100px;max-width:1000px;margin:0 auto;}
+    .categoria{margin:30px 0;background:white;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.1);transition:0.3s;}
+    .categoria:hover{transform:translateY(-5px);}
+    h2{font-size:1.5em;color:#1e40af;margin-bottom:20px;border-left:5px solid #3b82f6;padding-left:15px;}
+    .frase{margin:15px 0;padding:20px;background:#f8fafc;border-radius:15px;border-left:4px solid #10b981;box-shadow:0 4px 15px rgba(0,0,0,0.05);position:relative;}
+    .frase:hover{background:#e6fffa;}
+    .edit{display:none;background:#f59e0b;color:white;padding:8px 12px;border-radius:20px;position:absolute;top:15px;right:15px;cursor:pointer;font-size:14px;transition:0.3s;}
+    .edit:hover{background:#d97706;}
+    .edit-form{display:none;background:#fef3c7;padding:20px;border-radius:15px;margin:10px 0;}
+    .edit-form input,.edit-form textarea{width:100%;padding:12px;border:2px solid #fbbf24;border-radius:10px;margin:10px 0;font-family:inherit;}
+    .edit-form button{background:#059669;color:white;border:none;padding:12px 24px;border-radius:10px;cursor:pointer;margin:5px;}
+    .add-btn{background:#8b5cf6;color:white;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;font-size:16px;margin:20px auto;display:block;transition:0.3s;}
+    .add-btn:hover{background:#7c3aed;}
+    .close{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer;color:#94a3b8;}
   </style>
 </head>
 <body>
   <header>
-    <h1>HM Radiologia</h1>
-    <p>Frases de Laudos - Neuro, Tórax, Abdome e mais. Edição fácil via GitHub.</p>
+    <h1>🩻 HM Radiologia</h1>
+    <p>Laudos Prontos | Neuro · Tórax · Abdome</p>
+    <button onclick="toggleLogin()" style="background:#ef4444;color:white;border:none;padding:8px 16px;border-radius:20px;margin-top:10px;cursor:pointer;">🔐 Login Editar</button>
   </header>
+
+  <div id="loginForm" class="login">
+    <h2>🔐 Entrar</h2>
+    <input type="password" id="senha" placeholder="Senha (hmradio2026)" maxlength="20">
+    <button onclick="login()">Entrar</button>
+    <div class="close" onclick="toggleLogin()">×</div>
+  </div>
+
   <div id="laudos"></div>
+
   <script>
-    fetch('frases.json').then(r=>r.json()).then(data=>{
-      let html='';
-      for(let cat in data){
-        html+=`<div class="categoria"><h2>${cat.toUpperCase()}</h2><ul>`;
-        data[cat].forEach(f=>html+=`<li>${f}</li>`);
-        html+='</ul></div>';
-      }
-      document.getElementById('laudos').innerHTML=html;
-    }).catch(e=>document.getElementById('laudos').innerHTML='<p>Carregando frases... (edite frases.json)</p>');
+    const SENHA_CORRETA = 'hmradio2026'; // MUDE AQUI SUA SENHA!
+    let editando = false;
+
+    function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
+    function login(){
+      if(document.getElementById('senha').value === SENHA_CORRETA){ 
+        editando = true; loadFrases(); 
+        document.getElementById('loginForm').style.display='none'; 
+        alert('Login OK! Agora edite frases.');
+      } else alert('Senha errada!');
+    }
+
+    function loadFrases(){
+      fetch('frases.json').then(r=>r.json()).then(data=>{
+        let html='';
+        for(let cat in data){
+          html+=`<div class="categoria"><h2>${cat.toUpperCase()}</h2>`;
+          data[cat].forEach((f,i)=>html+=`<div class="frase">${f}<span class="edit" onclick="editFrase('${cat}',${i})">✏️ Editar</span><div class="edit-form" id="edit-${cat}-${i}"><input id="new-${cat}-${i}" value="${f}"><button onclick="saveFrase('${cat}',${i})">Salvar</button><button onclick="cancelEdit('${cat}',${i})">Cancelar</button></div></div>`);
+          html+='</div>';
+        }
+        html+='<button class="add-btn" onclick="addNovaFrase()">➕ Nova Frase/Categoria</button>';
+        document.getElementById('laudos').innerHTML=html;
+      });
+    }
+
+    function editFrase(cat, i){ document.getElementById(`edit-${cat}-${i}`).style.display='block'; }
+    function cancelEdit(cat,i){ document.getElementById(`edit-${cat}-${i}`).style.display='none'; }
+    function saveFrase(cat,i){
+      // Salva no servidor ou localStorage (simples demo) - para real, usa GitHub API com token
+      alert('Frase salva! (Implemente GitHub API para auto-save)');
+      cancelEdit(cat,i);
+    }
+    function addNovaFrase(){ alert('Add categoria/frase nova via frases.json'); }
+
+    loadFrases(); // Carrega público
   </script>
 </body>
 </html>
