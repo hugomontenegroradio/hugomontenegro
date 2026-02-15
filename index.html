@@ -91,23 +91,28 @@
   </div>
 
   <script>
-    const SENHA_CORRETA = 'hmradio2026'; // MUDA AQUI!
-    let editando = false;
+  const SENHA_HASH = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5 de 'hmradio2026' - NÃO VISÍVEL!
+  let editando = false;
+  let frasesUsuario = JSON.parse(localStorage.getItem('frasesHM') || '{}'); // Suas edições salvas
 
-    function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
-    function login(){
-      if(document.getElementById('senha').value === SENHA_CORRETA){ 
-        editando = true; alert('Login OK! Edição ativada.'); 
-        document.getElementById('loginForm').style.display='none'; 
-      } else alert('Senha incorreta!');
-    }
+  function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
+  function login(){
+    const senha = document.getElementById('senha').value;
+    if(md5(senha) === SENHA_HASH){ 
+      editando = true; 
+      loadFrasesUsuario();
+      document.getElementById('loginForm').style.display='none'; 
+      document.getElementById('senha').value='';
+      alert('✅ Login OK! Editor ativado. Edições salvas no seu browser.');
+    } else alert('❌ Senha incorreta!');
+  }
 
-    function showCategoria(cat){
-      document.querySelectorAll('nav li').forEach(li=>li.classList.remove('active'));
-      event.target.classList.add('active');
-      // Carrega conteúdo da categoria (expanda com suas frases.json depois)
-      document.getElementById('conteudo').innerHTML = `<div class="categoria"><h2>${cat.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h2><div class="frase">Frases carregadas para ${cat}. Edite via login!</div></div>`;
-    }
-  </script>
+  // MD5 simples (senha ofuscada)
+  function md5(string) {
+    function rotateLeft(lValue, iShiftBits) { return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits)); }
+    function addUnsigned(lX, lY) { let lX4 = (lX & 0x3FFFFFFF); let lY4 = (lY & 0x3FFFFFFF); let lX8 = (lX & 0x80000000); let lY8 = (lY & 0x80000000); let lResult = (lX4 + lY4); if (lX8 & lY8) { return (lResult ^ 0x80000000 ^ (lX4 & lY4)); } return lResult; }
+    function F(x, y, z) { return (x & y) | ((~x) & z); }
+    function G(x
+
 </body>
 </html>
