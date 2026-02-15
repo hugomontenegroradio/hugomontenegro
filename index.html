@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compêndio de Radiologia</title>
-  <meta name="description" content="Compêndio de radiologia com seções de abdome, crânio, tórax, MSK, doppler, protocolos e modelos de laudo." />
+  <title>HM Radiologia | Laudos, Protocolos e Referências</title>
+  <meta name="description" content="HM Radiologia: modelos de laudos estruturados, protocolos de imagem, checklists e ferramentas para radiologistas." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,28 +12,36 @@
     <!-- MENU LATERAL -->
     <aside class="sidebar">
       <div class="brand">
-        <h1>Compêndio<br>de Radiologia</h1>
-        <p class="brand-sub">Referência rápida para residentes e radiologistas.</p>
+        <h1>HM<br>Radiologia</h1>
+        <p class="brand-sub">Laudos • Protocolos • Referências</p>
       </div>
 
       <nav class="nav">
-        <h2>Seções</h2>
-        <a href="#abdome">Abdome e pelve</a>
-        <a href="#cranio">Crânio</a>
-        <a href="#angio">Angio</a>
-        <a href="#cabeca-pescoco">Cabeça e pescoço</a>
+        <h2>Laudos</h2>
+        <a href="#laudos-tc">TC</a>
+        <a href="#laudos-rm">RM</a>
+        <a href="#laudos-us">US</a>
+        <a href="#laudos-doppler">Doppler</a>
+
+        <h2>Protocolos</h2>
+        <a href="#proto-tc">TC</a>
+        <a href="#proto-rm">RM</a>
+        <a href="#proto-us">US</a>
+
+        <h2>Referências</h2>
+        <a href="#checklists">Checklists</a>
+        <a href="#classificacoes">Classificações</a>
+        <a href="#medidas">Medidas</a>
+
+        <h2>Outros</h2>
+        <a href="#neurologia">Neurologia</a>
         <a href="#msk">MSK</a>
+        <a href="#abdome">Abdome</a>
         <a href="#torax">Tórax</a>
-        <a href="#coluna">Coluna</a>
-        <a href="#protocolos">Protocolos</a>
-        <a href="#modelos-laudos">Modelos de laudos</a>
-        <a href="#doppler">Doppler</a>
-        <a href="#us">US</a>
-        <a href="#us-obstetrico">US obstétrico</a>
       </nav>
 
       <footer class="sidebar-footer">
-        <p>Versão 2026 • Atualizado periodicamente.</p>
+        <p>HM Radiologia • 2026</p>
       </footer>
     </aside>
 
@@ -41,49 +49,58 @@
     <main class="content">
       <header class="topbar">
         <div>
-          <h1>Compêndio de Radiologia</h1>
-          <p>Organizado por seções para consulta rápida à beira do laudo.</p>
+          <h1>HM Radiologia</h1>
+          <p>Modelos de laudos, protocolos e ferramentas práticas para o dia a dia do radiologista.</p>
         </div>
       </header>
 
       <section class="section intro">
-        <h2>Bem-vindo(a)</h2>
+        <h2>Como usar</h2>
         <p>
-          Este compêndio reúne resumos, checklists e modelos práticos em radiologia,
-          organizado por área de atuação para facilitar o estudo e o dia a dia de laudo.
+          Navegue pelas seções no menu lateral para acessar modelos de laudos estruturados,
+          protocolos de aquisição, checklists de qualidade e referências de medidas/classificações.
+        </p>
+        <p>
+          Cada seção tem modelos prontos para copiar/colar, com linguagem padronizada e estrutura
+          aprovada por radiologistas experientes.
         </p>
       </section>
 
-      <section id="abdome" class="section">
-        <h2>Abdome e pelve</h2>
-        <p>Coloque aqui seus tópicos, protocolos, checklists e tabelas de abdome e pelve.</p>
+      <section id="laudos-tc" class="section">
+        <h2>Laudos TC</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>TC Crânio</h3>
+            <p>Modelo completo com HASB, escala de Glasgow, achados vasculares.</p>
+          </div>
+          <div class="card">
+            <h3>TC Tórax</h3>
+            <p>Laudo estruturado com parênquima, mediastino, pleura e achados incidentais.</p>
+          </div>
+        </div>
       </section>
 
-      <section id="cranio" class="section">
-        <h2>Crânio</h2>
-        <p>Conteúdos sobre TC e RM de crânio, escalas, principais diagnósticos e armadilhas.</p>
+      <section id="laudos-rm" class="section">
+        <h2>Laudos RM</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>RM Coluna</h3>
+            <p>Descrição por segmento com classificações de hérnia e estenose.</p>
+          </div>
+          <div class="card">
+            <h3>RM MSK</h3>
+            <p>Joelho, ombro, quadril com classificação de lesões ligamentares.</p>
+          </div>
+        </div>
       </section>
 
-      <section id="angio" class="section">
-        <h2>Angio</h2>
-        <p>AngioTC, AngioRM, protocolos, contrastes, critérios de estenose e fluxos de laudo.</p>
-      </section>
-
-      <section id="cabeca-pescoco" class="section">
-        <h2>Cabeça e pescoço</h2>
-        <p>Subdivida por seios da face, região cervical, tumores de cabeça e pescoço etc.</p>
-      </section>
-
-      <section id="msk" class="section">
-        <h2>MSK</h2>
-        <p>Articulações, músculos, ossos, classificações e modelos de descrição padronizada.</p>
-      </section>
-
-      <section id="torax" class="section">
-        <h2>Tórax</h2>
-        <p>Padrões intersticiais, nódulos pulmonares, scores e achados incidentais.</p>
-      </section>
-
-      <section id="coluna" class="section">
-        <h2>Coluna</h2>
-        <p>Hérnias, estenoses, classificações, relató
+      <section id="laudos-us" class="section">
+        <h2>Laudos US</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>US Abdome</h3>
+            <p>Abdome total com medidas, doppler e relatório estruturado.</p>
+          </div>
+          <div class="card">
+            <h3>US Tireoide</h3>
+            <p>TI-RADS, medidas, vascularização e recomend
