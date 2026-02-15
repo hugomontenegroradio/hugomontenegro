@@ -1,23 +1,113 @@
-<script>
-  const SENHA_HASH = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5 de 'hmradio2026' - NÃO VISÍVEL!
-  let editando = false;
-  let frasesUsuario = JSON.parse(localStorage.getItem('frasesHM') || '{}'); // Suas edições salvas
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HM Radiologia - Laudário Medicina Interna</title>
+  <meta name="description" content="Frases de laudos categorizadas - Urgência, Tórax, Abdome, AngioTC.">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;color:#333;}
+    .container{display:flex;min-height:100vh;}
+    nav{width:280px;background:white;border-radius:20px 0 20px 20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.2);overflow-y:auto;}
+    nav h2{color:#1e40af;margin-bottom:20px;font-size:1.3em;}
+    nav ul{list-style:none;}
+    nav li{margin:10px 0;padding:12px 15px;background:#f1f5f9;border-radius:12px;cursor:pointer;transition:0.3s;}
+    nav li:hover{background:#e0e7ff;}
+    nav li.active{background:#3b82f6;color:white;}
+    nav .sub{margin-left:25px;font-size:0.9em;background:#f8fafc;}
+    .main{flex:1;margin-left:30px;padding:30px;overflow-y:auto;}
+    header{position:fixed;top:20px;right:20px;z-index:100;}
+    .login-btn{background:#ef4444;color:white;border:none;padding:12px 20px;border-radius:25px;cursor:pointer;box-shadow:0 4px 15px rgba(239,68,68,0.4);transition:0.3s;font-weight:bold;}
+    .login-btn:hover{background:#dc2626;}
+    .login{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:40px;border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,0.4);text-align:center;width:90%;max-width:400px;z-index:200;}
+    .login input{padding:15px;margin:10px;border:2px solid #e0e7ff;border-radius:12px;font-size:16px;width:80%;background:#f8fafc;}
+    .login button{background:#1e40af;color:white;border:none;padding:15px 30px;border-radius:12px;cursor:pointer;font-size:16px;transition:0.3s;margin:10px;}
+    .login button:hover{background:#1e3a8a;}
+    .close{position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;color:#94a3b8;}
+    .categoria{margin:30px 0;background:white;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.1);}
+    h2{font-size:1.6em;color:#1e40af;margin-bottom:25px;border-left:5px solid #3b82f6;padding-left:15px;}
+    .frase{margin:20px 0;padding:25px;background:#f8fafc;border-radius:15px;border-left:5px solid #10b981;box-shadow:0 5px 20px rgba(0,0,0,0.08);position:relative;line-height:1.6;}
+    .frase:hover{box-shadow:0 8px 30px rgba(0,0,0,0.15);}
+    @media(max-width:768px){.container{flex-direction:column;}.nav{width:100%;margin-bottom:20px;border-radius:20px 20px 0 0;}.main{margin-left:0;}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav id="menu">
+      <h2>📁 Categorias</h2>
+      <ul>
+        <li onclick="showCategoria('urgencia')" class="active">🚨 Urgência</li>
+        <ul class="sub">
+          <li onclick="showCategoria('neuro')">Neuro</li>
+          <li onclick="showCategoria('cabpesc')">Cabpesc</li>
+          <li onclick="showCategoria('torax')">Tórax</li>
+          <li onclick="showCategoria('abdome')">Abdome</li>
+          <li onclick="showCategoria('msk')">MSK</li>
+        </ul>
+        <li onclick="showCategoria('torax2')">🫁 Tórax</li>
+        <li onclick="showCategoria('abdome2')">🫀 Abdome</li>
+        <ul class="sub">
+          <li onclick="showCategoria('figado')">Fígado</li>
+          <li onclick="showCategoria('vesicula')">Vesícula Biliar</li>
+          <li onclick="showCategoria('pancreas')">Pâncreas</li>
+          <li onclick="showCategoria('rins')">Rins</li>
+          <li onclick="showCategoria('baco')">Baço</li>
+          <li onclick="showCategoria('bexiga')">Bexiga</li>
+          <li onclick="showCategoria('intestino')">Intestino</li>
+        </ul>
+        <li onclick="showCategoria('angiotc')">🔬 AngioTC</li>
+        <li onclick="showCategoria('pelve')">👩 Pelve Feminina</li>
+        <li onclick="showCategoria('prostata')">👨 Próstata</li>
+      </ul>
+    </nav>
 
-  function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
-  function login(){
-    const senha = document.getElementById('senha').value;
-    if(md5(senha) === SENHA_HASH){ 
-      editando = true; 
-      loadFrasesUsuario();
-      document.getElementById('loginForm').style.display='none'; 
-      document.getElementById('senha').value='';
-      alert('✅ Login OK! Editor ativado. Edições salvas no seu browser.');
-    } else alert('❌ Senha incorreta!');
-  }
+    <div class="main">
+  <header style="text-align:center;margin-bottom:30px;">
+    <h1 style="font-size:2.5em;color:#1e40af;margin:0;font-weight:bold;letter-spacing:2px;">🩻 HM Radiologia</h1>
+    <p style="font-size:1.2em;color:#475569;margin:5px 0;font-weight:500;">Modelos de Laudo</p>
+    <button class="login-btn" onclick="toggleLogin()">🔐 Login Editar</button>
+  </header>
 
-  // MD5 simples (senha ofuscada)
-  function md5(string) {
-    function rotateLeft(lValue, iShiftBits) { return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits)); }
-    function addUnsigned(lX, lY) { let lX4 = (lX & 0x3FFFFFFF); let lY4 = (lY & 0x3FFFFFFF); let lX8 = (lX & 0x80000000); let lY8 = (lY & 0x80000000); let lResult = (lX4 + lY4); if (lX8 & lY8) { return (lResult ^ 0x80000000 ^ (lX4 & lY4)); } return lResult; }
-    function F(x, y, z) { return (x & y) | ((~x) & z); }
-    function G(x
+      <header>
+        <button class="login-btn" onclick="toggleLogin()">🔐 Login Editar</button>
+      </header>
+      
+      <div id="loginForm" class="login">
+        <h2>🔐 Editor de Frases</h2>
+        <input type="password" id="senha" placeholder="Senha (hmradio2026)" maxlength="20">
+        <button onclick="login()">Entrar</button>
+        <div class="close" onclick="toggleLogin()">×</div>
+      </div>
+
+      <div id="conteudo">
+        <div class="categoria">
+          <h2>🚨 Urgência - Neuro</h2>
+          <div class="frase">AVC isquêmico: hipodensidade em território ACM direita com perda da diferenciação cinzenta-branca; inferindo infarto cerebral agudo.</div>
+          <div class="frase">Hematoma subdural agudo: coleção lentiforme hiperdensa frontotemporal direita (1,5 cm); inferindo TCE grave.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SENHA_CORRETA = 'hmradio2026'; // MUDA AQUI!
+    let editando = false;
+
+    function toggleLogin(){ document.getElementById('loginForm').style.display = 'block'; }
+    function login(){
+      if(document.getElementById('senha').value === SENHA_CORRETA){ 
+        editando = true; alert('Login OK! Edição ativada.'); 
+        document.getElementById('loginForm').style.display='none'; 
+      } else alert('Senha incorreta!');
+    }
+
+    function showCategoria(cat){
+      document.querySelectorAll('nav li').forEach(li=>li.classList.remove('active'));
+      event.target.classList.add('active');
+      // Carrega conteúdo da categoria (expanda com suas frases.json depois)
+      document.getElementById('conteudo').innerHTML = `<div class="categoria"><h2>${cat.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h2><div class="frase">Frases carregadas para ${cat}. Edite via login!</div></div>`;
+    }
+  </script>
+</body>
+</html>
